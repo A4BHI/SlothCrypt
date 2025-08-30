@@ -10,21 +10,21 @@ func main() {
 
 	var quitButton *tview.Button
 	var flex *tview.Flex
+	var flex1 *tview.Flex
+	var loginform *tview.Form
+	var loginButton *tview.Button
+	var registerButton *tview.Button
+	var buttonrow *tview.Flex
 
-	loginButton := tview.NewButton("Login").SetSelectedFunc(func() {
-		app.SetRoot(nil, true) // Replace with actual login screen
+	loginButton = tview.NewButton("Login").SetSelectedFunc(func() {
+		flex.AddItem(tview.NewFlex().SetDirection(tview.FlexRow).AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).AddItem(nil, 0, 1, false).AddItem(loginform, 25, 1, false).AddItem(nil, 0, 1, false), 0, 1, false), 9, 1, false).AddItem(nil, 0, 1, false)
+		buttonrow.RemoveItem(loginButton)
+		buttonrow.RemoveItem(registerButton)
 	})
 
-	registerButton := tview.NewButton("Register").SetSelectedFunc(func() {
+	registerButton = tview.NewButton("Register").SetSelectedFunc(func() {
 		app.SetRoot(nil, true) // Replace with actual register screen
 	})
-
-	// Side-by-side button grid
-	// buttonRow := tview.NewGrid().
-	// 	SetRows(1).                   // Single row
-	// 	SetColumns(-5, 1, 1, 12, -1). // Two equal columns
-	// 	AddItem(loginButton, 0, 0, 1, 1, 0, 0, true).
-	// 	AddItem(registerButton, 0, 1, 1, 1, 0, 0, false)
 
 	homepage := tview.NewTextView().
 		SetText("Welcome to SlothScrypt.\n !! Lock it once, trust it forever !!\nWe ensure a high level of protection for your files using AES-256.").
@@ -46,23 +46,31 @@ func main() {
 		SetSelectedFunc(func() {
 			app.SetRoot(modal, true)
 		})
-	flex1 := tview.NewFlex().SetDirection(tview.FlexRow).
+
+	loginform = tview.NewForm().AddInputField("Username:", "", 11, nil, nil).AddInputField("Password:", "", 11, nil, nil).AddButton("Login ", nil).
+		AddButton("Cancel ", nil)
+	loginform.SetTitle("Login Now")
+	loginform.SetButtonStyle(tcell.Style.Background(tcell.Style{}, tcell.ColorDarkOrchid))
+	loginform.SetBorder(true)
+	buttonrow = tview.NewFlex().
+		SetDirection(tview.FlexColumn).
+		AddItem(nil, 0, 1, false).
+		AddItem(loginButton, 20, 0, true).
+		AddItem(nil, 1, 1, false).
+		AddItem(registerButton, 20, 1, true).
+		AddItem(nil, 1, 1, false).
+		AddItem(quitButton, 20, 1, true).
+		AddItem(nil, 0, 1, false)
+	flex1 = tview.NewFlex().SetDirection(tview.FlexRow).
 		AddItem(homepage, 5, 1, false).
 		AddItem(nil, 0, 2, false).
-		AddItem(tview.NewFlex().
-			SetDirection(tview.FlexColumn).
-			AddItem(nil, 0, 1, false).
-			AddItem(loginButton, 20, 0, true).
-			AddItem(nil, 1, 1, false).
-			AddItem(registerButton, 20, 1, true).
-			AddItem(nil, 1, 1, false).
-			AddItem(quitButton, 20, 1, true).
-			AddItem(nil, 0, 1, false), 1, 0, true).
+		AddItem(buttonrow, 1, 1, true).
 		AddItem(nil, 0, 1, false)
 	flex1.SetBorder(true)
 
 	flex = tview.NewFlex().AddItem(flex1, 10, 1, false).SetDirection(tview.FlexRow)
-	// flex.SetBorder(true)
+	flex.SetBorder(true)
+	flex.AddItem(nil, 0, 1, false)
 
 	if err := app.SetRoot(flex, true).EnableMouse(true).Run(); err != nil {
 		panic(err)
