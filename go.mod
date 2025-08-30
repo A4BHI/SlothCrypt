@@ -1,4 +1,4 @@
-module mypack
+module sloth
 
 go 1.24.5
 
