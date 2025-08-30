@@ -55,10 +55,11 @@ func Loadui() {
 				app.SetRoot(flex, true)
 			}
 		})
+
 	modal.SetBackgroundColor(tcell.ColorBlack).
 		SetButtonBackgroundColor(tcell.ColorMediumPurple)
 
-		// Quit button
+	// Quit button
 	quitButton = tview.NewButton("Quit").
 		SetSelectedFunc(func() {
 			app.SetRoot(modal, true)
