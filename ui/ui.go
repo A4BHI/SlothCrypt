@@ -22,20 +22,27 @@ func Loadui() {
 		buttonrow.RemoveItem(loginButton)
 		buttonrow.RemoveItem(registerButton)
 	})
-	loginButton.SetStyle(tcell.StyleDefault.Background(tcell.ColorMediumVioletRed))
-
+	loginButton.SetStyle(tcell.StyleDefault.
+		Background(tcell.ColorMediumPurple).
+		Foreground(tcell.ColorBlack).
+		Bold(true))
 	//Register Button
 	registerButton = tview.NewButton("Register").SetSelectedFunc(func() {
 		app.SetRoot(nil, true)
 	})
-	registerButton.SetStyle(tcell.StyleDefault.Background(tcell.ColorMediumVioletRed))
+	registerButton.SetStyle(tcell.StyleDefault.
+		Background(tcell.ColorHotPink).
+		Foreground(tcell.ColorBlack).
+		Bold(true))
 
 	//Homepage (title)
 	homepage := tview.NewTextView().
 		SetText("Welcome to SlothScrypt.\n !! Lock it once, trust it forever !!\nWe ensure a high level of protection for your files using AES-256.").
 		SetTextAlign(tview.AlignCenter).
 		SetDynamicColors(true)
-	homepage.SetBorder(true).SetBackgroundColor(tcell.ColorGreen)
+	homepage.SetBorder(true).
+		SetBorderColor(tcell.ColorFuchsia).
+		SetBackgroundColor(tcell.ColorBlack)
 
 	//Modal for Quit Button
 	modal := tview.NewModal().
@@ -48,13 +55,18 @@ func Loadui() {
 				app.SetRoot(flex, true)
 			}
 		})
+	modal.SetBackgroundColor(tcell.ColorBlack).
+		SetButtonBackgroundColor(tcell.ColorMediumPurple)
 
 		// Quit button
 	quitButton = tview.NewButton("Quit").
 		SetSelectedFunc(func() {
 			app.SetRoot(modal, true)
 		})
-	quitButton.SetStyle(tcell.StyleDefault.Background(tcell.ColorMediumVioletRed))
+	quitButton.SetStyle(tcell.StyleDefault.
+		Background(tcell.ColorRed).
+		Foreground(tcell.ColorWhite).
+		Bold(true))
 
 	//Login Form
 	loginform = tview.NewForm().AddInputField("Username:", "", 11, nil, nil).AddInputField("Password:", "", 11, nil, nil).AddButton("Login ", nil).
