@@ -15,10 +15,14 @@ func Loadui() {
 	var loginButton *tview.Button
 	var registerButton *tview.Button
 	var buttonrow *tview.Flex
+	var registerform *tview.Form
 
 	//Login Button
 	loginButton = tview.NewButton("Login").SetSelectedFunc(func() {
-		flex.AddItem(tview.NewFlex().SetDirection(tview.FlexRow).AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).AddItem(nil, 0, 1, false).AddItem(loginform, 25, 1, false).AddItem(nil, 0, 1, false), 0, 1, false), 9, 1, false).AddItem(nil, 0, 1, false)
+		flex.AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
+			AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+				AddItem(nil, 0, 1, false).AddItem(loginform, 25, 1, false).
+				AddItem(nil, 0, 1, false), 0, 1, false), 9, 1, false).AddItem(nil, 0, 1, false)
 		buttonrow.RemoveItem(loginButton)
 		buttonrow.RemoveItem(registerButton)
 	})
@@ -26,9 +30,15 @@ func Loadui() {
 		Background(tcell.ColorMediumPurple).
 		Foreground(tcell.ColorBlack).
 		Bold(true))
+
 	//Register Button
 	registerButton = tview.NewButton("Register").SetSelectedFunc(func() {
-		app.SetRoot(nil, true)
+		flex.AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
+			AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+				AddItem(nil, 0, 1, false).AddItem(registerform, 31, 1, false).
+				AddItem(nil, 0, 1, false), 0, 1, false), 11, 1, false).AddItem(nil, 0, 1, false)
+		buttonrow.RemoveItem(loginButton)
+		buttonrow.RemoveItem(registerButton)
 	})
 	registerButton.SetStyle(tcell.StyleDefault.
 		Background(tcell.ColorHotPink).
@@ -82,6 +92,16 @@ func Loadui() {
 		Bold(true))
 	loginform.SetBorder(true)
 
+	//Register Form
+	registerform = tview.NewForm().AddInputField("Username:", "", 17, nil, nil).AddInputField("Email:", "", 17, nil, nil).AddInputField("Password:", "", 17, nil, nil).AddButton(" Register ", nil).
+		AddButton(" Cancel ", nil)
+	registerform.SetTitle("Register")
+	registerform.SetTitleColor(tcell.ColorAqua).
+		SetBorderColor(tcell.ColorFuchsia).
+		SetBackgroundColor(tcell.ColorBlack)
+	registerform.SetButtonStyle(tcell.StyleDefault.Background(tcell.ColorMediumPurple).Foreground(tcell.ColorBlack).Bold(true))
+	registerform.SetBorder(true)
+
 	//Button Row Of Login,Register,Quit
 	buttonrow = tview.NewFlex().
 		SetDirection(tview.FlexColumn).
@@ -109,7 +129,7 @@ func Loadui() {
 	flex.SetBorderColor(tcell.ColorAqua)
 	flex.SetBackgroundColor(tcell.ColorBlack)
 
-	if err := app.SetRoot(flex, true).EnableMouse(true).SetFocus(flex).Run(); err != nil {
+	if err := app.SetRoot(flex, true).EnableMouse(true).SetFocus(flex).SetFocus(flex1).SetFocus(loginform).Run(); err != nil {
 		panic(err)
 	}
 }
