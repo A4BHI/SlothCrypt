@@ -16,15 +16,39 @@ func Loadui() {
 	var registerButton *tview.Button
 	var buttonrow *tview.Flex
 	var registerform *tview.Form
+	var loginContainer *tview.Flex
+	// var buttonrowcheck *tview.Flex
+
+	loginform = tview.NewForm().AddInputField("Username:", "", 11, nil, nil).AddInputField("Password:", "", 11, nil, nil).AddButton("Login ", nil).
+		AddButton("Cancel ", func() {
+			flex1.AddItem(buttonrow, 1, 1, true)
+			flex1.AddItem(nil, 0, 1, false)
+			flex.RemoveItem(loginContainer)
+
+			// buttonrowcheck = flex1.AddItem(nil, 0, 1, false)
+
+		})
+	loginform.SetTitle("Login Now")
+	loginform.SetTitleColor(tcell.ColorAqua).
+		SetBorderColor(tcell.ColorFuchsia).
+		SetBackgroundColor(tcell.ColorBlack)
+	loginform.SetButtonStyle(tcell.StyleDefault.
+		Background(tcell.ColorMediumPurple).
+		Foreground(tcell.ColorBlack).
+		Bold(true))
+	loginform.SetBorder(true)
+
+	loginContainer = tview.NewFlex().SetDirection(tview.FlexRow).
+		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+			AddItem(nil, 0, 1, false).AddItem(loginform, 25, 1, false).
+			AddItem(nil, 0, 1, false), 0, 1, false)
 
 	//Login Button
 	loginButton = tview.NewButton("Login").SetSelectedFunc(func() {
-		flex.AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-			AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-				AddItem(nil, 0, 1, false).AddItem(loginform, 25, 1, false).
-				AddItem(nil, 0, 1, false), 0, 1, false), 9, 1, false).AddItem(nil, 0, 1, false)
-		buttonrow.RemoveItem(loginButton)
-		buttonrow.RemoveItem(registerButton)
+		flex1.RemoveItem(buttonrow)
+		flex.AddItem(loginContainer, 9, 1, false).AddItem(nil, 0, 1, false)
+
+		// flex1.RemoveItem(buttonrowcheck)
 	})
 	loginButton.SetStyle(tcell.StyleDefault.
 		Background(tcell.ColorMediumPurple).
@@ -80,17 +104,6 @@ func Loadui() {
 		Bold(true))
 
 	//Login Form
-	loginform = tview.NewForm().AddInputField("Username:", "", 11, nil, nil).AddInputField("Password:", "", 11, nil, nil).AddButton("Login ", nil).
-		AddButton("Cancel ", nil)
-	loginform.SetTitle("Login Now")
-	loginform.SetTitleColor(tcell.ColorAqua).
-		SetBorderColor(tcell.ColorFuchsia).
-		SetBackgroundColor(tcell.ColorBlack)
-	loginform.SetButtonStyle(tcell.StyleDefault.
-		Background(tcell.ColorMediumPurple).
-		Foreground(tcell.ColorBlack).
-		Bold(true))
-	loginform.SetBorder(true)
 
 	//Register Form
 	registerform = tview.NewForm().AddInputField("Username:", "", 17, nil, nil).AddInputField("Email:", "", 17, nil, nil).AddInputField("Password:", "", 17, nil, nil).AddButton(" Register ", nil).
@@ -116,7 +129,7 @@ func Loadui() {
 		//flex to align homepage and buttonrow
 	flex1 = tview.NewFlex().SetDirection(tview.FlexRow).
 		AddItem(homepage, 5, 1, false).
-		AddItem(nil, 0, 2, false).
+		AddItem(nil, 0, 1, false).
 		AddItem(buttonrow, 1, 1, true).
 		AddItem(nil, 0, 1, false)
 	flex1.SetBorder(true)
@@ -125,7 +138,7 @@ func Loadui() {
 	//main Flex
 	flex = tview.NewFlex().AddItem(flex1, 10, 1, false).SetDirection(tview.FlexRow)
 	flex.SetBorder(true)
-	flex.AddItem(nil, 0, 1, false)
+	// flex.AddItem(nil, 0, 1, false)
 	flex.SetBorderColor(tcell.ColorAqua)
 	flex.SetBackgroundColor(tcell.ColorBlack)
 
