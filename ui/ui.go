@@ -17,13 +17,20 @@ func Loadui() {
 	var buttonrow *tview.Flex
 	var registerform *tview.Form
 	var loginContainer *tview.Flex
-	// var buttonrowcheck *tview.Flex
+	var buttonrowcheck bool
 
 	loginform = tview.NewForm().AddInputField("Username:", "", 11, nil, nil).AddInputField("Password:", "", 11, nil, nil).AddButton("Login ", nil).
 		AddButton("Cancel ", func() {
+			buttonrow.RemoveItem(quitButton)
+			buttonrowcheck = false
+
+			if !buttonrowcheck {
+
+				flex.RemoveItem(loginContainer)
+				buttonrowcheck = true
+			}
 			flex1.AddItem(buttonrow, 1, 1, true)
 			flex1.AddItem(nil, 0, 1, false)
-			flex.RemoveItem(loginContainer)
 
 			// buttonrowcheck = flex1.AddItem(nil, 0, 1, false)
 
@@ -45,8 +52,10 @@ func Loadui() {
 
 	//Login Button
 	loginButton = tview.NewButton("Login").SetSelectedFunc(func() {
-		flex1.RemoveItem(buttonrow)
-		flex.AddItem(loginContainer, 9, 1, false).AddItem(nil, 0, 1, false)
+		// flex1.RemoveItem(buttonrow)
+		buttonrow.RemoveItem(loginButton)
+		buttonrow.RemoveItem(registerButton)
+		flex.AddItem(loginContainer, 9, 1, false)
 
 		// flex1.RemoveItem(buttonrowcheck)
 	})

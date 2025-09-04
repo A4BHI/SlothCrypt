@@ -1,12 +1,10 @@
 package main
 
-import (
-	"sloth/enryption"
-)
+import "sloth/ui"
 
 func main() {
-	// ui.Loadui()
+	ui.Loadui()
 	// login.Login()
 
-	enryption.Encryption("admin", "hello123")
+	// enryption.Encryption("admin", "hello123")
 }

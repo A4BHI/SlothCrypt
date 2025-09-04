@@ -27,6 +27,7 @@ func EncryptFileKey(filekey []byte, masterkey []byte) []byte {
 	return encfilekey
 
 }
+
 func Encryption(username string, password string) {
 	filekey := make([]byte, 32)
 	rand.Read(filekey)
