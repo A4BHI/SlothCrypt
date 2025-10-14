@@ -20,14 +20,15 @@ func Loadui() {
 	// var buttonrowcheck *tview.Flex
 	var nilspace *tview.Flex
 	var nilspace2 *tview.Flex
+	var nilspace3 *tview.Flex
 
 	loginform = tview.NewForm().AddInputField("Username:", "", 11, nil, nil).AddInputField("Password:", "", 11, nil, nil).AddButton("Login ", nil).
 		AddButton("Cancel ", func() {
 			flex1.AddItem(buttonrow, 1, 1, true)
-			flex1.AddItem(nil, 0, 1, false)
-
-			flex.RemoveItem(loginContainer)
+			nilspace3 = flex1.AddItem(nil, 0, 1, false)
 			flex.RemoveItem(nilspace)
+			flex.RemoveItem(loginContainer)
+
 			flex.RemoveItem(nilspace2)
 			// buttonrowcheck = flex1.AddItem(nil, 0, 1, false)
 
@@ -50,9 +51,11 @@ func Loadui() {
 	//Login Button
 	loginButton = tview.NewButton("Login").SetSelectedFunc(func() {
 		flex1.RemoveItem(buttonrow)
-		// nilspace = flex.AddItem(nil, 0, 1, false)
+		flex1.RemoveItem(nilspace3)
+		nilspace = flex.AddItem(nil, 0, 1, false)
 		flex.AddItem(loginContainer, 9, 1, false)
 		nilspace2 = flex.AddItem(nil, 0, 1, false)
+		// flex.AddItem(nil, 0, 1, false)
 
 		// flex1.RemoveItem(buttonrowcheck)
 	})
@@ -144,7 +147,7 @@ func Loadui() {
 	//main Flex
 	flex = tview.NewFlex().AddItem(flex1, 10, 1, false).SetDirection(tview.FlexRow)
 	flex.SetBorder(true)
-	flex.AddItem(nil, 0, 1, false)
+	// flex.AddItem(nil, 0, 1, false)
 	flex.SetBorderColor(tcell.ColorAqua)
 	flex.SetBackgroundColor(tcell.ColorBlack)
 

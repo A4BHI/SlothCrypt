@@ -7,6 +7,7 @@ import (
 )
 
 func Connect() pgx.Conn {
+   
 	pglink := "postgres://a4bhi:a4bhi@localhost:5432/sloth"
 	conn, _ := pgx.Connect(context.Background(), pglink)
 	return *conn
