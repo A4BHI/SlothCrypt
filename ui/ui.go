@@ -1,6 +1,9 @@
 package ui
 
 import (
+	"context"
+	"sloth/db"
+
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
@@ -21,6 +24,8 @@ func Loadui() {
 	var nilspace *tview.Flex
 	var nilspace2 *tview.Flex
 	var nilspace3 *tview.Flex
+
+	var username *tview.InputField
 
 	loginform = tview.NewForm().AddInputField("Username:", "", 11, nil, nil).AddInputField("Password:", "", 11, nil, nil).AddButton("Login ", nil).
 		AddButton("Cancel ", func() {
@@ -114,10 +119,16 @@ func Loadui() {
 
 	//Login Form
 
+	username.SetLabel("Username")
 	//Register Form
-	registerform = tview.NewForm().AddInputField("Username:", "", 17, nil, nil).AddInputField("Email:", "", 17, nil, nil).AddInputField("Password:", "", 17, nil, nil).AddButton(" Register ", nil).
+	registerform = tview.NewForm().AddFormItem(username).AddInputField("Email:", "", 17, nil, nil).AddInputField("Password:", "", 17, nil, nil).AddButton(" Register ", func() {
+
+		conn := db.Connect()
+		conn.Exec(context.Background(), "insert into users($1,$2,$3)")
+	}).
 		AddButton(" Cancel ", nil)
 	registerform.SetTitle("Register")
+
 	registerform.SetTitleColor(tcell.ColorAqua).
 		SetBorderColor(tcell.ColorFuchsia).
 		SetBackgroundColor(tcell.ColorBlack)
