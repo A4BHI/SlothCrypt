@@ -28,7 +28,7 @@ func Loadui() {
 	var nilspace *tview.Flex
 	var nilspace2 *tview.Flex
 	var nilspace3 *tview.Flex
-
+	var alert *tview.Modal
 	var username *tview.InputField
 	var password *tview.InputField
 
@@ -52,7 +52,20 @@ func Loadui() {
 					fmt.Println("Error generating hashedpass", err)
 					return
 				}
-				conn.Exec(context.TODO(), "Inaert into users values($1,$2,$3)", userid, username.GetText(), hashedpass)
+				_, err = conn.Exec(context.TODO(), "Insert into users values($1,$2,$3)", userid, username.GetText(), hashedpass)
+				if err == nil {
+					alert = tview.NewModal().SetText("Account Created Successfully :) ").AddButtons([]string{"OK"}).SetDoneFunc(func(buttonIndex int, buttonLabel string) {
+						if buttonLabel == "OK" {
+							if err := app.SetRoot(flex, true).EnableMouse(true).SetFocus(flex).SetFocus(flex1).SetFocus(loginform).Run(); err != nil {
+								panic(err)
+							}
+						}
+						if err := app.SetRoot(alert, false).EnableMouse(true).Run(); err != nil {
+							panic(err)
+						}
+					})
+
+				}
 			} else {
 				return
 			}
