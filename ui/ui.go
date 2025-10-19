@@ -1,9 +1,6 @@
 package ui
 
 import (
-	"context"
-	"sloth/db"
-
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
@@ -20,12 +17,66 @@ func Loadui() {
 	var buttonrow *tview.Flex
 	var registerform *tview.Form
 	var loginContainer *tview.Flex
+	var registerContainer *tview.Flex
 	// var buttonrowcheck *tview.Flex
 	var nilspace *tview.Flex
 	var nilspace2 *tview.Flex
 	var nilspace3 *tview.Flex
 
 	var username *tview.InputField
+	var password *tview.InputField
+
+	username = tview.NewInputField().SetLabel("Username:")
+	password = tview.NewInputField().SetLabel("Password:")
+
+	// Register Form
+	registerform = tview.NewForm().
+		AddFormItem(username).
+		AddFormItem(password).
+		AddButton("Register ", nil).
+		AddButton("Cancel ", func() {
+			flex1.AddItem(buttonrow, 1, 1, true)
+			nilspace3 = flex1.AddItem(nil, 0, 1, false)
+			flex.RemoveItem(nilspace)
+			flex.RemoveItem(registerContainer)
+			flex.RemoveItem(nilspace2)
+		})
+
+	registerform.SetTitle("Register Now")
+	registerform.SetTitleColor(tcell.ColorAqua).
+		SetBorderColor(tcell.ColorFuchsia).
+		SetBackgroundColor(tcell.ColorBlack)
+	registerform.SetButtonStyle(
+		tcell.StyleDefault.
+			Background(tcell.ColorMediumPurple).
+			Foreground(tcell.ColorBlack).
+			Bold(true),
+	)
+	registerform.SetBorder(true)
+
+	registerContainer = tview.NewFlex().SetDirection(tview.FlexRow).
+		AddItem(
+			tview.NewFlex().SetDirection(tview.FlexColumn).
+				AddItem(nil, 0, 1, false).
+				AddItem(registerform, 25, 1, false).
+				AddItem(nil, 0, 1, false),
+			0, 1, false,
+		)
+
+	registerButton = tview.NewButton("Register").SetSelectedFunc(func() {
+		flex1.RemoveItem(buttonrow)
+		flex1.RemoveItem(nilspace3)
+		nilspace = flex.AddItem(nil, 0, 1, false)
+		flex.AddItem(registerContainer, 9, 1, false)
+		nilspace2 = flex.AddItem(nil, 0, 1, false)
+	})
+
+	registerButton.SetStyle(
+		tcell.StyleDefault.
+			Background(tcell.ColorMediumPurple).
+			Foreground(tcell.ColorBlack).
+			Bold(true),
+	)
 
 	loginform = tview.NewForm().AddInputField("Username:", "", 11, nil, nil).AddInputField("Password:", "", 11, nil, nil).AddButton("Login ", nil).
 		AddButton("Cancel ", func() {
@@ -69,20 +120,6 @@ func Loadui() {
 		Foreground(tcell.ColorBlack).
 		Bold(true))
 
-	//Register Button
-	registerButton = tview.NewButton("Register").SetSelectedFunc(func() {
-		flex.AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
-			AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-				AddItem(nil, 0, 1, false).AddItem(registerform, 31, 1, false).
-				AddItem(nil, 0, 1, false), 0, 1, false), 11, 1, false).AddItem(nil, 0, 1, false)
-		buttonrow.RemoveItem(loginButton)
-		buttonrow.RemoveItem(registerButton)
-	})
-	registerButton.SetStyle(tcell.StyleDefault.
-		Background(tcell.ColorHotPink).
-		Foreground(tcell.ColorBlack).
-		Bold(true))
-
 	//Homepage (title)
 	homepage := tview.NewTextView().
 		SetText("Welcome to SlothScrypt.\n !! Lock it once, trust it forever !!\nWe ensure a high level of protection for your files using AES-256.").
@@ -118,22 +155,6 @@ func Loadui() {
 		Bold(true))
 
 	//Login Form
-
-	username.SetLabel("Username")
-	//Register Form
-	registerform = tview.NewForm().AddFormItem(username).AddInputField("Email:", "", 17, nil, nil).AddInputField("Password:", "", 17, nil, nil).AddButton(" Register ", func() {
-
-		conn := db.Connect()
-		conn.Exec(context.Background(), "insert into users($1,$2,$3)")
-	}).
-		AddButton(" Cancel ", nil)
-	registerform.SetTitle("Register")
-
-	registerform.SetTitleColor(tcell.ColorAqua).
-		SetBorderColor(tcell.ColorFuchsia).
-		SetBackgroundColor(tcell.ColorBlack)
-	registerform.SetButtonStyle(tcell.StyleDefault.Background(tcell.ColorMediumPurple).Foreground(tcell.ColorBlack).Bold(true))
-	registerform.SetBorder(true)
 
 	//Button Row Of Login,Register,Quit
 	buttonrow = tview.NewFlex().
