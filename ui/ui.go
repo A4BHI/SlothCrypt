@@ -78,7 +78,10 @@ func Loadui() {
 			Bold(true),
 	)
 
-	loginform = tview.NewForm().AddInputField("Username:", "", 11, nil, nil).AddInputField("Password:", "", 11, nil, nil).AddButton("Login ", nil).
+	loginform = tview.NewForm().
+		AddFormItem(username).
+		AddFormItem(password).
+		AddButton("Login ", nil).
 		AddButton("Cancel ", func() {
 			flex1.AddItem(buttonrow, 1, 1, true)
 			nilspace3 = flex1.AddItem(nil, 0, 1, false)
