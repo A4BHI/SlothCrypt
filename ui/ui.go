@@ -1,8 +1,14 @@
 package ui
 
 import (
+	"context"
+	"fmt"
+	"math/rand"
+	"sloth/db"
+
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func Loadui() {
@@ -33,7 +39,25 @@ func Loadui() {
 	registerform = tview.NewForm().
 		AddFormItem(username).
 		AddFormItem(password).
-		AddButton("Register ", nil).
+		AddButton("Register ", func() {
+
+			userid := rand.Intn(100) + 100
+			conn := db.Connect()
+			var n string
+			conn.QueryRow(context.TODO(), "Select username from users where username=$1", username.GetText()).Scan(&n)
+
+			if n == "" {
+				hashedpass, err := bcrypt.GenerateFromPassword([]byte(password.GetText()), 12)
+				if err != nil {
+					fmt.Println("Error generating hashedpass", err)
+					return
+				}
+				conn.Exec(context.TODO(), "Inaert into users values($1,$2,$3)", userid, username.GetText(), hashedpass)
+			} else {
+				return
+			}
+
+		}).
 		AddButton("Cancel ", func() {
 			flex1.AddItem(buttonrow, 1, 1, true)
 			nilspace3 = flex1.AddItem(nil, 0, 1, false)
