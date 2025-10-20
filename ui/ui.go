@@ -41,7 +41,6 @@ func Loadui() {
 		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
 			if buttonLabel == "OK" {
 				app.SetRoot(flex, true)
-
 				nilspace3 = flex1.AddItem(nil, 0, 1, false)
 				flex.RemoveItem(nilspace)
 				flex.RemoveItem(registerContainer)
