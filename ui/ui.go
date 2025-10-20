@@ -35,6 +35,33 @@ func Loadui() {
 	username = tview.NewInputField().SetLabel("Username:")
 	password = tview.NewInputField().SetLabel("Password:")
 
+	alert = tview.NewModal().
+		SetText("Account Created Successfully :) ").
+		AddButtons([]string{"OK"}).
+		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
+			if buttonLabel == "OK" {
+
+				app.SetRoot(flex, true).SetFocus(loginform)
+
+			}
+		})
+
+	alert.SetBackgroundColor(tcell.ColorBlack).
+		SetButtonBackgroundColor(tcell.ColorMediumPurple)
+
+	modal := tview.NewModal().
+		SetText("Do you want to quit??").
+		AddButtons([]string{"Yes", "No"}).
+		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
+			if buttonLabel == "Yes" {
+				app.Stop()
+			} else {
+				app.SetRoot(flex, true)
+			}
+		})
+
+	modal.SetBackgroundColor(tcell.ColorBlack).
+		SetButtonBackgroundColor(tcell.ColorMediumPurple)
 	// Register Form
 	registerform = tview.NewForm().
 		AddFormItem(username).
@@ -54,16 +81,7 @@ func Loadui() {
 				}
 				_, err = conn.Exec(context.TODO(), "Insert into users values($1,$2,$3)", userid, username.GetText(), hashedpass)
 				if err == nil {
-					alert = tview.NewModal().SetText("Account Created Successfully :) ").AddButtons([]string{"OK"}).SetDoneFunc(func(buttonIndex int, buttonLabel string) {
-						if buttonLabel == "OK" {
-							if err := app.SetRoot(flex, true).EnableMouse(true).SetFocus(flex).SetFocus(flex1).SetFocus(loginform).Run(); err != nil {
-								panic(err)
-							}
-						}
-						if err := app.SetRoot(alert, false).EnableMouse(true).Run(); err != nil {
-							panic(err)
-						}
-					})
+					app.SetRoot(alert, true)
 
 				}
 			} else {
@@ -170,19 +188,6 @@ func Loadui() {
 		SetBackgroundColor(tcell.ColorBlack)
 
 	//Modal for Quit Button
-	modal := tview.NewModal().
-		SetText("Do you want to quit??").
-		AddButtons([]string{"Yes", "No"}).
-		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
-			if buttonLabel == "Yes" {
-				app.Stop()
-			} else {
-				app.SetRoot(flex, true)
-			}
-		})
-
-	modal.SetBackgroundColor(tcell.ColorBlack).
-		SetButtonBackgroundColor(tcell.ColorMediumPurple)
 
 	// Quit button
 	quitButton = tview.NewButton("Quit").
