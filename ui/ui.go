@@ -40,9 +40,18 @@ func Loadui() {
 		AddButtons([]string{"OK"}).
 		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
 			if buttonLabel == "OK" {
+				app.SetRoot(flex, true)
 
-				app.SetRoot(flex, true).SetFocus(loginform)
+				nilspace3 = flex1.AddItem(nil, 0, 1, false)
+				flex.RemoveItem(nilspace)
+				flex.RemoveItem(registerContainer)
+				flex.RemoveItem(nilspace2)
+				flex1.RemoveItem(buttonrow)
+				flex1.RemoveItem(nilspace3)
 
+				nilspace = flex.AddItem(nil, 0, 1, false)
+				flex.AddItem(loginContainer, 9, 1, false)
+				nilspace2 = flex.AddItem(nil, 0, 1, false)
 			}
 		})
 
