@@ -48,6 +48,8 @@ func Loadui() {
 				flex1.RemoveItem(buttonrow)
 				flex1.RemoveItem(nilspace3)
 
+				username.SetText("")
+				password.SetText("")
 				nilspace = flex.AddItem(nil, 0, 1, false)
 				flex.AddItem(loginContainer, 9, 1, false)
 				nilspace2 = flex.AddItem(nil, 0, 1, false)
